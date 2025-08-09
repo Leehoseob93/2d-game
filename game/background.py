@@ -8,7 +8,7 @@ class Background:
     def max_scroll(self,screen_width):
         return self.bg.width() - screen_width
 
-    def scroll_left(self,speed,screen_width):
+    def scroll_left(self,speed,screen_width = None):
         self.offset = max(0,self.offset - speed)
 
     def scroll_right(self,speed,screen_width):
