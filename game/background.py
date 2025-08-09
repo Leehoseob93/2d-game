@@ -2,7 +2,7 @@ from PyQt5.QtGui import QPixmap
 
 class Background:
     def __init__(self):
-        self.bg = QPixmap("background.png")
+        self.bg = QPixmap("assets/background.png")
         self.offset = 0
 
     def max_scroll(self,screen_width):

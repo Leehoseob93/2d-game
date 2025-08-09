@@ -3,11 +3,15 @@ from PyQt5.QtCore import Qt
 
 class Character:
     def __init__(self, x, background):
-        self.char = QPixmap("character.png")
+        self.char = QPixmap("assets/character.png")
+        self.char_right = QPixmap("assets/character_right.png")
+        self.char_left = QPixmap("assets/character_left.png")
         self.x = x
         self.ground_y = background.height() - self.char.height()
         self.y = self.ground_y
         self.speed = 5
+        self.direction = "right"
+        
         
         self.is_jumping = False
         self.jump_power = 15
@@ -15,9 +19,11 @@ class Character:
         self.gravity = 1
 
     def move_left(self):
+        self.direction = "left"
         self.x -= self.speed
     
     def move_right(self):
+        self.direction = "right"
         self.x += self.speed
 
     def start_jump(self):
@@ -36,7 +42,11 @@ class Character:
 
 
     def draw(self,painter):
-        painter.drawPixmap(self.x, self.y, self.char)
+        if self.direction == "left":
+            painter.drawPixmap(self.x, self.y, self.char_left)
+        elif self.direction == "right":
+            painter.drawPixmap(self.x, self.y, self.char_right)
+
 
     def width(self):
         return self.char.width()

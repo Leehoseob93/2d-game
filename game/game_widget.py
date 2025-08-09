@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtGui import QPainter
 from game.character import Character
 from game.background import Background
 from game.controller import CharacterManager
+from game.knife import Knife
 
 class GameWidget(QWidget):
     def __init__(self):
@@ -19,10 +20,16 @@ class GameWidget(QWidget):
         self.timer.timeout.connect(self.game_loop)
         self.timer.start(16)
 
+        self.knives = []
+
     def keyPressEvent(self, event):
         self.controller.key_press(event.key())
         if event.key() == Qt.Key_Space:
             self.character.start_jump()
+
+        if event.key() == Qt.Key_A:
+            new_knife = Knife(self.character)
+            self.knives.append(new_knife)
 
     def keyReleaseEvent(self, event):
         self.controller.key_release(event.key())
@@ -32,6 +39,7 @@ class GameWidget(QWidget):
         max_scroll = self.background.max_scroll(self.width())
 
         if self.controller.move_right:
+            self.character.direction = "right"
             if self.character.x < self.width() // 2:
                 self.character.move_right()
             elif self.background.offset < max_scroll:
@@ -41,15 +49,19 @@ class GameWidget(QWidget):
                     self.character.move_right()
 
         if self.controller.move_left:
+            self.character.direction = "left"
             if self.character.x > self.width() // 2:
                 self.character.move_left()
             elif self.background.offset > 0:
-                self.background.scroll_left(speed,self.width())
+                self.background.scroll_left(speed)
             else:
                 if self.character.x > 0:
                     self.character.move_left()
 
         self.character.update_jump()
+
+        for knife in self.knives:
+            knife.move()
 
         self.update()
 
@@ -58,3 +70,6 @@ class GameWidget(QWidget):
         painter = QPainter(self)
         self.background.draw(painter, self.width(), self.height())
         self.character.draw(painter)
+
+        for knife in self.knives:
+            knife.draw(painter)
