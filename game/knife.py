@@ -1,4 +1,4 @@
-from game.character import Character
+from .character import Character
 from PyQt5.QtGui import QPixmap
 
 class Knife:
@@ -6,6 +6,7 @@ class Knife:
         self.knife_right = QPixmap('assets/knife_right.png')
         self.knife_left = QPixmap('assets/knife_left.png')
         self.y = character.y + character.height()//3
+        self.power = 10
         self.direction = character.direction
         self.angle = 0
         self.rotation_speed = 25
@@ -37,3 +38,9 @@ class Knife:
         painter.rotate(self.angle)
         painter.drawPixmap(-center_x, -center_y, pixmap)
         painter.restore()
+    
+    def width(self):
+        return self.knife_right.width()
+    
+    def height(self):
+        return self.knife_right.height()
