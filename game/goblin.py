@@ -5,7 +5,7 @@ from .background import Background
 
 class Goblin:
     def __init__(self, background:Background, char_abs_x:int):
-        self.gob = QPixmap("assets/goblin.png")
+        self.gob = QPixmap("2d-game/assets/goblin.png")
         self.x = random.randint(0,background.width())
         self.y = background.height() - self.gob.height()
         self.speed = 1

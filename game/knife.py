@@ -3,8 +3,8 @@ from PyQt5.QtGui import QPixmap
 
 class Knife:
     def __init__(self, character:Character):
-        self.knife_right = QPixmap('assets/knife_right.png')
-        self.knife_left = QPixmap('assets/knife_left.png')
+        self.knife_right = QPixmap('2d-game/assets/knife_right.png')
+        self.knife_left = QPixmap('2d-game/assets/knife_left.png')
         self.y = character.y + character.height()//3
         self.power = 10
         self.direction = character.direction

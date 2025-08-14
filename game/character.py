@@ -1,12 +1,10 @@
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QTransform
 from PyQt5.QtCore import Qt, QRect
 from .background import Background
 
 class Character:
     def __init__(self, x, background:Background):
-        self.char = QPixmap("assets/character.png")
-        self.char_right = QPixmap("assets/character_right.png")
-        self.char_left = QPixmap("assets/character_left.png")
+        self.char = QPixmap("2d-game/assets/character.png")
         self.x = x
         self.ground_y = background.height() - self.char.height()
         self.y = self.ground_y
@@ -51,10 +49,12 @@ class Character:
             self.is_dead = True
 
     def draw(self,painter,bg_offset:int):
+        pixmap_r = self.char
+        pixmap_l = self.char.transformed(QTransform().scale(-1, 1))
         if self.direction == "right":
-            painter.drawPixmap(self.x, self.y, self.char_right)
+            painter.drawPixmap(self.x, self.y, pixmap_r)
         elif self.direction == "left":
-            painter.drawPixmap(self.x, self.y, self.char_left)
+            painter.drawPixmap(self.x, self.y, pixmap_l)
         
         painter.setPen(Qt.white)
         painter.setFont(QFont('Arial',10))
