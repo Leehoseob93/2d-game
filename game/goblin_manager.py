@@ -5,6 +5,7 @@ from .background import Background
 from .goblin import Goblin
 from .character import Character
 from .background import Background
+from .knife import Knife
 
 class GoblinManager:
     def __init__(self, background:Background, character:Character):
@@ -22,7 +23,7 @@ class GoblinManager:
         self.spawn_goblin()
 
     def spawn_goblin(self):
-        char_abs_x = self.character.x + self.background.offset
+        char_abs_x = self.character.pos.x
         new_goblin = Goblin(self.background, char_abs_x)
         self.goblins.append(new_goblin)
 
@@ -30,10 +31,11 @@ class GoblinManager:
         remove_knives = []
 
         for knife in knives:
+            kx, ky = knife.pos.screen(self.background.offset)
             if knife in remove_knives:
                 continue
             
-            knife_rect = QRect(knife.x, knife.y, knife.width(), knife.height())
+            knife_rect = QRect(kx, ky, knife.width(), knife.height())
 
             for goblin in self.goblins:
                 goblin_rect = goblin.get_screen_rect(self.background.offset)
@@ -50,7 +52,7 @@ class GoblinManager:
         character_rect = self.character.get_rect(self.background.offset)
 
         for goblin in self.goblins:
-            goblin_rect = goblin.get_rect()
+            goblin_rect = goblin.get_screen_rect(self.background.offset)
             if character_rect.intersects(goblin_rect):
                 current_time = time.time()
                 if current_time - self.character.last_damage_time > self.character.damage_duration:

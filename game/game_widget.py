@@ -43,28 +43,29 @@ class GameWidget(QWidget):
 
 
     def game_loop(self):
+        scr_x, scr_y = self.character.pos.screen(self.background.offset)
         if self.character.is_dead == False:
             speed = self.character.speed
             max_scroll = self.background.max_scroll(self.width())
 
             if self.controller.move_right:
                 self.character.direction = "right"
-                if self.character.x < self.width() // 2:
+                if scr_x < self.width() // 2:
                     self.character.move_right()
                 elif self.background.offset < max_scroll:
                     self.background.scroll_right(speed,self.width())
                 else:
-                    if self.character.x < self.width() - self.character.width():
+                    if scr_x < self.width() - self.character.width():
                         self.character.move_right()
 
             if self.controller.move_left:
                 self.character.direction = "left"
-                if self.character.x > self.width() // 2:
+                if scr_x > self.width() // 2:
                     self.character.move_left()
                 elif self.background.offset > 0:
                     self.background.scroll_left(speed)
                 else:
-                    if self.character.x > 0:
+                    if scr_x > 0:
                         self.character.move_left()
 
             self.character.update_jump()
@@ -73,7 +74,7 @@ class GameWidget(QWidget):
                 knife.move()
 
             for goblin in self.goblin_manager.goblins:
-                char_abs_x = self.character.x + self.background.offset
+                char_abs_x = self.character.pos.x
                 goblin.move(char_abs_x)
 
             self.check_collision()
@@ -87,7 +88,7 @@ class GameWidget(QWidget):
             self.character.draw(painter,self.background.offset)
 
             for knife in self.knives:
-                knife.draw(painter)
+                knife.draw(painter, self.background.offset)
 
             for goblin in self.goblin_manager.goblins:
                 goblin.draw(painter, self.background.offset)
