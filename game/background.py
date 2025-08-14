@@ -3,6 +3,9 @@ from PyQt5.QtGui import QPixmap
 class Background:
     def __init__(self):
         self.bg = QPixmap("2d-game/assets/background.png")
+        self.origin_x =0
+        self.origin_y =0
+
         self.offset = 0
 
     def max_scroll(self,screen_width):
@@ -12,7 +15,6 @@ class Background:
         self.offset = max(0,self.offset - speed)
 
     def scroll_right(self,speed,screen_width):
-        max_scroll = self.bg.width() - screen_width
         self.offset = min(self.max_scroll(screen_width),self.offset + speed)
 
     def draw(self, painter, screen_width, screen_height):
